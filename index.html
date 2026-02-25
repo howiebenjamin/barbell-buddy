@@ -5,7 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pre-WOD Excuse Generator</title>
   <style>
-    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    :root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* C+C Muscle Factory theme */
+  --bg: #0b0f14;
+  --card: #121a24;
+
+  --red: #CB0133;
+  --cream: #F4F0E2;
+  --teal: #0B868F;
+
+  --text: #F4F0E2;
+  --muted: rgba(244,240,226,.80);
+
+  --border: rgba(244,240,226,.12);
+}
     body { margin: 0; background: #0b0f14; color: #e9eef6; }
     .wrap { 
   max-width: 480px;   /* Phone width feel */
@@ -13,12 +28,12 @@
   padding: 24px 16px 60px; 
 }
     .card {
-      background: #121a24;
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
-    }
+  background: rgba(18,26,36,.92);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
     h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: .2px; }
     .sub { opacity: .8; margin-bottom: 18px; }
     .row { 
@@ -50,25 +65,31 @@
   font-size: 16px;      /* Mobile readable */
 }
     button {
-      cursor: pointer;
-      font-weight: 700;
-      border: 1px solid rgba(255,255,255,.18);
-      background: linear-gradient(180deg, rgba(101,163,255,.22), rgba(101,163,255,.08));
-    }
-    button.secondary {
-      font-weight: 600;
-      background: rgba(255,255,255,.05);
-    }
+  cursor: pointer;
+  font-weight: 900;
+  border: 1px solid rgba(244,240,226,.18);
+  background: linear-gradient(180deg, rgba(203,1,51,.35), rgba(203,1,51,.15));
+  -webkit-tap-highlight-color: transparent;
+}
+button.secondary {
+  font-weight: 800;
+  background: rgba(244,240,226,.06);
+}
+button.danger {
+  font-weight: 1000;
+  background: linear-gradient(180deg, rgba(11,134,143,.35), rgba(11,134,143,.12));
+  border-color: rgba(11,134,143,.35);
+}
     .mini { font-size: 12px; opacity: .75; }
     .pillrow { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .pill {
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      font-size: 12px;
-      opacity: .9;
-    }
+   .pill {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(11,134,143,.12);
+  border: 1px solid rgba(11,134,143,.28);
+  font-size: 12px;
+  opacity: .95;
+}
     .fav {
       margin-top: 18px;
       display: grid;
@@ -103,7 +124,13 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>CrossFit Roots Pre-WOD Excuse Generator</h1>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+  <img src="cc-logo.jpg" alt="C+C Muscle Factory" style="width:54px; height:54px; border-radius:14px; border:1px solid rgba(244,240,226,.18); object-fit:cover;">
+  <div>
+    <h1 style="margin:0; font-size:22px;">Pre-WOD Excuse Generator</h1>
+    <div class="mini" style="opacity:.9;">C+C Muscle Factory • Shark Tank Edition</div>
+  </div>
+</div>
       <div class="sub">For when you’re “not skipping”… you’re <em>periodizing</em>.</div>
 
       <div class="row">
@@ -124,6 +151,7 @@
               <option value="injury">Injury-ish</option>
               <option value="recovery">Recovery science</option>
               <option value="life">Work/Life logistics</option>
+              <option value="fashion">Fashion emergency</option>
               <option value="coach">Coach will understand</option>
               <option value="absurd">Unhinged</option>
             </select>
@@ -176,6 +204,13 @@
         "Work dropped a {workThing}. If I ignore it, I’ll be doing burpees in my unemployment.",
         "I can’t make it — I’m stuck dealing with {lifeThing}. Please log me as ‘mentally present’."
       ],
+      fashion: [
+  { t: "I can’t make class — my {fitItem} doesn’t match my {fitItem}. That’s basically injury prevention.", bel: 7 },
+  { t: "I’m late because I had to find my ‘performance’ outfit. You can’t PR in emotional chaos.", bel: 8 },
+  { t: "My {fitItem} is in the wash. I refuse to deadlift in ‘laundry shame’.", bel: 7 },
+  { t: "Coach, I’m scaling today because my new shoes are still in their feelings.", bel: 6 },
+  { t: "I’m not skipping. I’m doing a {deloadType} deload until my outfit looks fast.", bel: 5 }
+      ],
       coach: [
         "Coach, I’m going to scale today so I don’t turn a fun WOD into a 6-week rehab arc.",
         "I’m here, I’m moving, but I’m not going full send — I want consistency over heroics.",
@@ -204,6 +239,7 @@
       lifeThing: ["a plumber situation", "a dentist thing", "a family meeting", "DMV nonsense", "a surprise adult responsibility"],
       timeThing: ["noon", "2pm", "right after class", "in 30 minutes", "in exactly one inconvenient hour"],
       workThing: ["fire drill", "client emergency", "calendar ambush", "‘quick’ meeting", "spreadsheet incident"]
+      fitItem: ["Lululemon shorts", "vintage band tee", "new lifters", "headband", "WOD socks", "belt", "sleeves", "pump cover", "crop top", "hoodie"]
     };
 
     const plausibilityBoosters = [
@@ -376,4 +412,5 @@
   </script>
 </body>
 </html>
+
 
