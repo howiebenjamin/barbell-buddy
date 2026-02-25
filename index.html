@@ -78,7 +78,7 @@
     input[type="range"],
     button {
       width: 100%;
-      padding: 16px;
+      padding: 16px 16px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.12);
       background: #0f1620;
@@ -92,11 +92,7 @@
       cursor: pointer;
       font-weight: 900;
       border: 1px solid rgba(244,240,226,.18);
-      background: linear-gradient(
-        180deg,
-        rgba(203,1,51,.35),
-        rgba(203,1,51,.15)
-      );
+      background: linear-gradient(180deg, rgba(203,1,51,.35), rgba(203,1,51,.15));
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -107,11 +103,7 @@
 
     button.danger {
       font-weight: 1000;
-      background: linear-gradient(
-        180deg,
-        rgba(11,134,143,.35),
-        rgba(11,134,143,.12)
-      );
+      background: linear-gradient(180deg, rgba(11,134,143,.35), rgba(11,134,143,.12));
       border-color: rgba(11,134,143,.35);
     }
 
@@ -210,7 +202,6 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <!-- Header -->
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
         <img
           src="cc-logo.jpg"
@@ -219,9 +210,7 @@
         />
         <div>
           <h1 style="margin:0; font-size:22px;">Pre-WOD Excuse Generator</h1>
-          <div class="mini" style="opacity:.9;">
-            C+C Muscle Factory • Shark Tank Edition
-          </div>
+          <div class="mini" style="opacity:.9;">C+C Muscle Factory • Shark Tank Edition</div>
         </div>
       </div>
 
@@ -229,7 +218,6 @@
         For when you’re “not skipping”… you’re <em>periodizing</em>.
       </div>
 
-      <!-- Generator Section -->
       <div class="row">
         <div>
           <div id="excuse" class="excuse">
@@ -260,9 +248,7 @@
           <div>
             <label for="believability">Believability slider</label>
             <input id="believability" type="range" min="1" max="10" value="7" />
-            <div class="mini">
-              1 = “aliens” • 10 = “doctor’s note energy”
-            </div>
+            <div class="mini">1 = “aliens” • 10 = “doctor’s note energy”</div>
           </div>
 
           <button id="gen">Generate Excuse</button>
@@ -276,22 +262,18 @@
         </div>
       </div>
 
-      <!-- Favorites -->
       <div class="fav">
         <h2 style="margin: 10px 0 0; font-size: 16px;">Favorites</h2>
-        <div id="favList" class="mini" style="opacity:.92">
-          No favorites yet.
-        </div>
+        <div id="favList" class="mini" style="opacity:.92">No favorites yet.</div>
       </div>
 
       <div class="divider"></div>
 
-      <!-- Meme Section -->
+      <!-- COACH MEME -->
       <div class="memeCard">
-        <div style="font-weight:1000; font-size:16px;">Coach Meme</div>
-
+        <div style="font-weight: 1000; font-size: 16px;">Coach Meme</div>
         <div class="mini" style="margin-top:6px;">
-          One-tap Rocky-style meme using <strong>iron-dave.PNG</strong>.
+          One-tap Rocky-style meme using <strong>iron-dave.PNG</strong> from your GitHub repo.
         </div>
 
         <button id="ironDaveMode" class="danger" style="margin-top:10px;">
@@ -305,6 +287,10 @@
         <button id="downloadMeme" class="secondary" style="margin-top:10px;">
           Download Meme
         </button>
+
+        <div class="mini" style="margin-top:8px; opacity:.8;">
+          If you see a broken image: confirm the file name matches exactly <code>iron-dave.PNG</code>.
+        </div>
       </div>
     </div>
   </div>
@@ -312,18 +298,344 @@
   <div id="toast" class="toast">Copied.</div>
 
   <script>
-    // ---------- DATA ----------
     const data = {
       injury: [
         "My {bodyPart} is doing that thing again — I’m going to stay in {zone} today.",
-        "I tweaked my {bodyPart} on a very innocent movement (like {innocent}). I’m scaling hard."
+        "I tweaked my {bodyPart} on a very innocent movement (like {innocent}). I’m scaling hard.",
+        "I’ve got a {injuryWord} {bodyPart}. If I go RX, I’ll be a cautionary tale.",
+        "My {bodyPart} is tight in a way that feels… litigious. I’ll do {safeAlt}."
+      ],
+      recovery: [
+        "My {scienceThing} is cooked. I’m doing a {deloadType} deload for nervous system hygiene.",
+        "Sleep debt is {sleepNum} hours. I’m prioritizing recovery so I can peak for… Tuesday.",
+        "I’m in a low-readiness state per my {wearable}. If I push, it’s basically malpractice.",
+        "I’m skipping intensity to restore {scienceThing} and protect my long-term {goalWord}."
+      ],
+      life: [
+        "I have a {lifeThing} at {timeThing}. I’ll make it up with a shame-WOD later.",
+        "I’m on kid logistics today — if I’m late, it’s because I’m a responsible adult (allegedly).",
+        "Work dropped a {workThing}. If I ignore it, I’ll be doing burpees in my unemployment.",
+        "I can’t make it — I’m stuck dealing with {lifeThing}. Please log me as ‘mentally present’."
+      ],
+      fashion: [
+        "I can’t make class — my {fitItem} doesn’t match my {fitItem}. That’s basically injury prevention.",
+        "I’m late because I had to find my ‘performance’ outfit. You can’t PR in emotional chaos.",
+        "My {fitItem} is in the wash. I refuse to deadlift in ‘laundry shame’.",
+        "Coach, I’m scaling today because my new shoes are still in their feelings.",
+        "I’m not skipping. I’m doing a {deloadType} deload until my outfit looks fast."
+      ],
+      coach: [
+        "Coach, I’m going to scale today so I don’t turn a fun WOD into a 6-week rehab arc.",
+        "I’m here, I’m moving, but I’m not going full send — I want consistency over heroics.",
+        "I’m in the ‘train, don’t test’ phase today. I’ll keep it aerobic and be a good citizen.",
+        "I’m protecting my {bodyPart} so I can show up tomorrow instead of becoming gym folklore."
+      ],
+      absurd: [
+        "I can’t do RX. My {bodyPart} is in retrograde and my {scienceThing} is emotionally unavailable.",
+        "I’m scaling because my {wearable} said I’m ‘built different’ but in a fragile way.",
+        "I did mobility and accidentally achieved enlightenment. Intensity would ruin it.",
+        "I can’t train today — I’m in a feud with the Assault Bike and it’s getting legal."
       ]
-      // (rest of JS remains structurally identical,
-      // just properly indented and sectioned)
     };
 
-    // Your full JS continues here unchanged,
-    // just cleanly spaced and grouped like above.
+    const words = {
+      bodyPart: ["shoulder", "knee", "hip", "lower back", "wrist", "ankle", "elbow", "pec", "neck", "shin"],
+      zone: ["Zone 2", "technique town", "easy street", "scaled nation", "moderate purgatory"],
+      innocent: ["box step-ups", "air squats", "stretching", "sneezing", "putting my shoes on"],
+      injuryWord: ["spicy", "mildly haunted", "questionable", "suspicious", "high-maintenance"],
+      safeAlt: ["bike + light DB work", "ring rows + strict", "sled drags", "tempo goblet squats", "row + core"],
+      scienceThing: ["CNS", "HRV", "parasympathetic tone", "mitochondria", "connective tissue", "glycogen stores"],
+      deloadType: ["strategic", "high-IQ", "scientific", "humble", "responsible-adult"],
+      sleepNum: ["6", "7.5", "9", "12", "a criminal amount of"],
+      wearable: ["WHOOP", "Oura", "Apple Watch", "Garmin", "fit-check mirror"],
+      goalWord: ["gainz", "performance", "longevity", "PR potential", "knees"],
+      lifeThing: ["a plumber situation", "a dentist thing", "a family meeting", "DMV nonsense", "a surprise adult responsibility"],
+      timeThing: ["noon", "2pm", "right after class", "in 30 minutes", "in exactly one inconvenient hour"],
+      workThing: ["fire drill", "client emergency", "calendar ambush", "‘quick’ meeting", "spreadsheet incident"],
+      fitItem: ["Lululemon shorts", "vintage band tee", "new lifters", "headband", "WOD socks", "belt", "sleeves", "pump cover", "crop top", "hoodie"]
+    };
+
+    const plausibilityBoosters = [
+      "I’ll still warm up and move.",
+      "I’ll be there, just not doing anything that makes noises.",
+      "I’m choosing ‘tomorrow me’ today.",
+      "I’ll keep it controlled and focus on quality reps.",
+      "I’m subbing {safeAlt} so I don’t become a walking meme."
+    ];
+
+    const coachProofAddons = [
+      "I’m happy to judge, count reps, or wipe equipment like a contributing member of society.",
+      "I’ll set up/tear down so I still suffer emotionally.",
+      "I’ll do extra mobility so it looks like I’m trying.",
+      "I’ll stay after and clean chalk off things that should never be chalky."
+    ];
+
+    function pick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function fill(template) {
+      return template.replace(/\{(\w+)\}/g, (_, key) =>
+        words[key] ? pick(words[key]) : `{${key}}`
+      );
+    }
+
+    function generate(category, bel) {
+      const cats = Object.keys(data);
+      const cat = category === "any" ? pick(cats) : category;
+
+      let base = fill(pick(data[cat]));
+      let spice = "";
+      let coachProof = "";
+
+      if (bel >= 8) {
+        spice = " " + fill(pick(plausibilityBoosters));
+        coachProof = " " + pick(coachProofAddons);
+      } else if (bel >= 5) {
+        spice = " " + fill(pick(plausibilityBoosters));
+      } else {
+        const chaos = [
+          "Also, the music in my car sounded ‘too fast’ today, so I’m listening to my body.",
+          "If I go hard, my hamstrings will unionize.",
+          "I’m currently sore in places that don’t have names."
+        ];
+        spice = " " + pick(chaos);
+      }
+
+      const coachScore = bel >= 8 ? "High" : bel >= 5 ? "Medium" : "Low";
+
+      return {
+        text: (base + spice + (bel >= 8 ? coachProof : "")).trim(),
+        cat,
+        bel,
+        coachScore
+      };
+    }
+
+    const elExcuse = document.getElementById("excuse");
+    const elCat = document.getElementById("category");
+    const elBel = document.getElementById("believability");
+    const elTagCat = document.getElementById("tagCat");
+    const elTagBel = document.getElementById("tagBel");
+    const elTagSpice = document.getElementById("tagSpice");
+    const elToast = document.getElementById("toast");
+
+    let current = null;
+
+    function showToast(msg) {
+      elToast.textContent = msg;
+      elToast.classList.add("show");
+      setTimeout(() => elToast.classList.remove("show"), 900);
+    }
+
+    function renderCurrent() {
+      if (!current) return;
+      elExcuse.textContent = current.text;
+      elTagCat.textContent = "Category: " + current.cat;
+      elTagBel.textContent = "Believability: " + current.bel + "/10";
+      elTagSpice.textContent = "Coach-proof: " + current.coachScore;
+    }
+
+    const KEY = "prewod_excuses_favs_v1";
+
+    function loadFavs() {
+      try {
+        return JSON.parse(localStorage.getItem(KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveFavs(favs) {
+      localStorage.setItem(KEY, JSON.stringify(favs));
+    }
+
+    function renderFavs() {
+      const favs = loadFavs();
+      const el = document.getElementById("favList");
+
+      if (!favs.length) {
+        el.innerHTML = "No favorites yet.";
+        return;
+      }
+
+      el.innerHTML = "";
+      favs.slice().reverse().forEach((t, idxFromEnd) => {
+        const idx = favs.length - 1 - idxFromEnd;
+        const div = document.createElement("div");
+        div.className = "favItem";
+        div.innerHTML = `
+          <div style="font-size:13px; opacity:.9">
+            ${t.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+          </div>
+          <div class="actions">
+            <button class="secondary" data-copy="${idx}">Copy</button>
+            <button class="secondary" data-del="${idx}">Delete</button>
+          </div>
+        `;
+        el.appendChild(div);
+      });
+
+      el.querySelectorAll('button[data-copy]').forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const i = Number(btn.getAttribute("data-copy"));
+          await navigator.clipboard.writeText(loadFavs()[i]);
+          showToast("Copied favorite.");
+        });
+      });
+
+      el.querySelectorAll('button[data-del]').forEach(btn => {
+        btn.addEventListener("click", () => {
+          const i = Number(btn.getAttribute("data-del"));
+          const favs2 = loadFavs();
+          favs2.splice(i, 1);
+          saveFavs(favs2);
+          renderFavs();
+          showToast("Deleted.");
+        });
+      });
+    }
+
+    document.getElementById("gen").addEventListener("click", () => {
+      current = generate(elCat.value, Number(elBel.value));
+      renderCurrent();
+    });
+
+    document.getElementById("copy").addEventListener("click", async () => {
+      if (!current) current = generate(elCat.value, Number(elBel.value));
+      await navigator.clipboard.writeText(current.text);
+      showToast("Copied.");
+    });
+
+    document.getElementById("fav").addEventListener("click", () => {
+      if (!current) current = generate(elCat.value, Number(elBel.value));
+      const favs = loadFavs();
+      if (!favs.includes(current.text)) favs.push(current.text);
+      saveFavs(favs);
+      renderFavs();
+      showToast("Saved.");
+    });
+
+    document.getElementById("clearFav").addEventListener("click", () => {
+      localStorage.removeItem(KEY);
+      renderFavs();
+      showToast("Cleared.");
+    });
+
+    current = generate("any", Number(elBel.value));
+    renderCurrent();
+    renderFavs();
+
+    // IRON DAVE MEME (Rocky vibe)
+    const memeCanvas = document.getElementById("memeCanvas");
+    const mctx = memeCanvas.getContext("2d");
+
+    function drawIronDaveText() {
+      const cw = memeCanvas.width;
+      const ch = memeCanvas.height;
+      const topText = "GET UP YOU SON OF A BITCH";
+      const bottomText = "’CAUSE IRON DAVE LOVES YOU.";
+
+      mctx.textAlign = "center";
+      mctx.textBaseline = "middle";
+
+      function caption(str, y) {
+        let fontSize = 92;
+        mctx.font = `900 ${fontSize}px Impact, Haettenschweiler, 'Arial Black', sans-serif`;
+        const maxW = cw * 0.92;
+
+        while (mctx.measureText(str).width > maxW && fontSize > 36) {
+          fontSize -= 4;
+          mctx.font = `900 ${fontSize}px Impact, Haettenschweiler, 'Arial Black', sans-serif`;
+        }
+
+        mctx.lineWidth = Math.max(6, Math.floor(fontSize / 8));
+        mctx.strokeStyle = "black";
+        mctx.fillStyle = "white";
+        mctx.strokeText(str.toUpperCase(), cw / 2, y);
+        mctx.fillText(str.toUpperCase(), cw / 2, y);
+      }
+
+      caption(topText, 120);
+      caption(bottomText, ch - 140);
+    }
+
+    function makeGrittyBW() {
+      const cw = memeCanvas.width;
+      const ch = memeCanvas.height;
+      const imageData = mctx.getImageData(0, 0, cw, ch);
+      const d = imageData.data;
+
+      for (let i = 0; i < d.length; i += 4) {
+        const avg = (d[i] + d[i + 1] + d[i + 2]) / 3;
+        d[i] = avg;
+        d[i + 1] = avg;
+        d[i + 2] = avg;
+      }
+
+      mctx.putImageData(imageData, 0, 0);
+    }
+
+    function addVignette() {
+      const cw = memeCanvas.width;
+      const ch = memeCanvas.height;
+      const grd = mctx.createRadialGradient(cw / 2, ch / 2, ch / 5, cw / 2, ch / 2, ch);
+      grd.addColorStop(0, "rgba(0,0,0,0.05)");
+      grd.addColorStop(1, "rgba(0,0,0,0.78)");
+      mctx.fillStyle = grd;
+      mctx.fillRect(0, 0, cw, ch);
+    }
+
+    function generateIronDaveMeme() {
+      const img = new Image();
+
+      img.onload = () => {
+        const cw = memeCanvas.width;
+        const ch = memeCanvas.height;
+        const iw = img.width;
+        const ih = img.height;
+
+        const scale = Math.max(cw / iw, ch / ih);
+        const sw = cw / scale;
+        const sh = ch / scale;
+        const sx = (iw - sw) / 2;
+        const sy = (ih - sh) / 2;
+
+        mctx.clearRect(0, 0, cw, ch);
+        mctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
+        makeGrittyBW();
+        addVignette();
+        drawIronDaveText();
+      };
+
+      img.onerror = () => {
+        mctx.clearRect(0, 0, memeCanvas.width, memeCanvas.height);
+        mctx.fillStyle = "#0f1620";
+        mctx.fillRect(0, 0, memeCanvas.width, memeCanvas.height);
+        mctx.fillStyle = "rgba(244,240,226,.9)";
+        mctx.font = "700 34px system-ui";
+        mctx.textAlign = "center";
+        mctx.fillText("Couldn’t load iron-dave.PNG", memeCanvas.width / 2, memeCanvas.height / 2 - 20);
+        mctx.font = "500 22px system-ui";
+        mctx.fillText("Upload it next to index.html", memeCanvas.width / 2, memeCanvas.height / 2 + 20);
+        showToast("Missing iron-dave.PNG");
+      };
+
+      img.src = "iron-dave.PNG"; // must match exactly
+    }
+
+    document.getElementById("ironDaveMode").addEventListener("click", () => {
+      generateIronDaveMeme();
+      showToast("IRON DAVE MODE 🔥");
+    });
+
+    document.getElementById("downloadMeme").addEventListener("click", () => {
+      const a = document.createElement("a");
+      a.download = "iron-dave-meme.png";
+      a.href = memeCanvas.toDataURL("image/png");
+      a.click();
+      showToast("Downloaded.");
+    });
   </script>
 </body>
 </html>
