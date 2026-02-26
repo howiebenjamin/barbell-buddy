@@ -330,7 +330,49 @@
         "I can’t train today — I’m in a feud with the Assault Bike and it’s getting legal."
       ]
     };
+// --------------------
+// SOUND EFFECTS
+// Put these files in /sounds/ exactly with these names
+// --------------------
+const sfxFiles = [
+  "crickets.mp3",
+  "chicken.mp3",
+  "punch.mp3",
+  "boing.mp3",
+  "orchestra.mp3",
+  "boom.mp3",
+  "whistle.mp3",
+  "boxing-bell.mp3",
+  "cartoon-whistle.mp3",
+  "wrong-answer.mp3",
+  "sad-trombone.mp3",
+  "boo.mp3",
+  "airhorn.mp3",
+  "laugh.mp3",
+  "rimshot.mp3",
+];
 
+const sfx = sfxFiles.map(f => new Audio(`sounds/${f}`));
+sfx.forEach(a => (a.volume = 0.75));
+
+let sfxIndex = 0;
+
+function playNextSfx() {
+  if (!sfx.length) return;
+  const a = sfx[sfxIndex];
+  a.currentTime = 0;
+  a.play().catch(() => {});
+  sfxIndex = (sfxIndex + 1) % sfx.length;
+}
+
+// Iron Dave specific sound
+const ironDaveSfx = new Audio("sounds/iron-dave.mp3");
+ironDaveSfx.volume = 0.85;
+
+function playIronDaveSfx() {
+  ironDaveSfx.currentTime = 0;
+  ironDaveSfx.play().catch(() => {});
+}
     const words = {
       bodyPart: ["shoulder", "knee", "hip", "lower back", "wrist", "ankle", "elbow", "pec", "neck", "shin"],
       zone: ["Zone 2", "technique town", "easy street", "scaled nation", "moderate purgatory"],
@@ -490,9 +532,10 @@
     }
 
     document.getElementById("gen").addEventListener("click", () => {
-      current = generate(elCat.value, Number(elBel.value));
-      renderCurrent();
-    });
+  playNextSfx();
+  current = generate(elCat.value, Number(elBel.value));
+  renderCurrent();
+});
 
     document.getElementById("copy").addEventListener("click", async () => {
       if (!current) current = generate(elCat.value, Number(elBel.value));
@@ -618,11 +661,12 @@
     }
 
     document.getElementById("ironDaveMode").addEventListener("click", () => {
+      playIronDaveSfx();
       generateIronDaveMeme();
       showToast("IRON DAVE MODE 🔥");
     });
 
-    document.getElementById("downloadMeme").addEventListener("click", () => {
+    document.getElementById("download").addEventListener("click", () => {
       const a = document.createElement("a");
       a.download = "iron-dave-meme.png";
       a.href = memeCanvas.toDataURL("image/png");
@@ -632,5 +676,6 @@
   </script>
 </body>
 </html>
+
 
 
