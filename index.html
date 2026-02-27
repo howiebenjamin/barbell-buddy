@@ -37,16 +37,14 @@
 }
     .wrap{ max-width:1150px; margin:0 auto; padding:18px 16px 52px; }
 
-    header{
+   header{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
   margin-bottom:16px;
-}
   padding:14px 18px;
   border-radius:18px;
-
   background:rgba(0,0,0,.22); /* dark overlay on orange */
   box-shadow:0 12px 28px rgba(0,0,0,.30);
 }
@@ -950,22 +948,20 @@ if (window.innerWidth <= 560){
         statusEl.innerHTML = `<div class="warn">Closest plan: ${fmt(achievedTotal)} ${unit} (over by ${fmt(diff)} ${unit}).</div>`;
       }
 
-      // Sounds
-     // Sounds
+    // Sounds
 playRandomClick();
 playSound(CLANG_SOUND, 0.35);
 if (exact) playSound(WIN_SOUND, 0.45);
 else playSound(FAIL_SOUND, 0.45);
 
-// Stop mobile zoom + scroll to results
-if (document.activeElement && typeof document.activeElement.blur === "function") {
-  document.activeElement.blur();
-}
+// Stop mobile zoom + scroll to results (mobile only)
 if (window.innerWidth < 980){
+  if (document.activeElement && typeof document.activeElement.blur === "function") {
+    document.activeElement.blur();
+  }
   setTimeout(() => {
     resultsCard.scrollIntoView({ behavior:'smooth', block:'start' });
   }, 60);
-}
 }
       // Stop mobile browser from staying “zoomed” on a focused input
 if (document.activeElement && typeof document.activeElement.blur === "function") {
@@ -1051,6 +1047,7 @@ if (window.innerWidth < 980){
   </script>
 </body>
 </html>
+
 
 
 
