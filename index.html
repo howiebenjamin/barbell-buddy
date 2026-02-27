@@ -145,7 +145,7 @@
 
       <div class="memeWrap">
         <img class="meme" src="iron-dave.png" alt="Iron Dave" title="Iron Dave" onerror="this.style.display='none'">
-        <button id="ironDaveBtn" class="ghost" title="Play Iron Dave sound">IRON DAVE</button>
+        <button id="ironDaveBtn" class="ghost" title="Play Iron Dave sound">ROOTS</button>
       </div>
     </header>
 
@@ -274,9 +274,10 @@
 
         <div class="muted">Visual (per side):</div>
         <div class="viz">
-          <div class="bar" aria-hidden="true"></div>
-          <div class="plates" id="vizPlates"></div>
-        </div>
+  <div class="plates" id="vizLeft"></div>
+  <div class="bar" aria-hidden="true"></div>
+  <div class="plates" id="vizRight"></div>
+</div>
 
         <div class="divider"></div>
 
@@ -334,7 +335,8 @@
     const summaryEl = document.getElementById('summary');
     const hintEl = document.getElementById('hint');
 
-    const vizPlatesEl = document.getElementById('vizPlates');
+    const vizLeftEl = document.getElementById('vizLeft');
+const vizRightEl = document.getElementById('vizRight');
 
     const presetsRow = document.getElementById('presetsRow');
 
@@ -523,29 +525,35 @@
       return el;
     }
 
-    function renderViz(weights, counts, unit){
-      vizPlatesEl.innerHTML = '';
-      // show heaviest -> lightest, repeated by count
-      for (let i=0;i<weights.length;i++){
-        const w = weights[i];
-        const c = counts[i];
-        for (let k=0;k<c;k++){
-          const d = document.createElement('div');
-          d.className = 'plate';
-          // height scaled by weight (simple)
-          const h = 18 + Math.min(48, w*1.2);
-          d.style.height = `${h}px`;
-          d.innerHTML = `<span>${fmt(w)}</span>`;
-          vizPlatesEl.appendChild(d);
-        }
-      }
-      if (vizPlatesEl.children.length === 0){
+   function renderViz(weights, counts, unit){
+  vizLeftEl.innerHTML = '';
+  vizRightEl.innerHTML = '';
+
+  for (let i=0;i<weights.length;i++){
+    const w = weights[i];
+    const c = counts[i];
+
+    for (let k=0;k<c;k++){
+      const createPlate = () => {
         const d = document.createElement('div');
-        d.className = 'muted mini';
-        d.textContent = `No plates needed per side.`;
-        vizPlatesEl.appendChild(d);
-      }
+        d.className = 'plate';
+        const h = 18 + Math.min(48, w*1.2);
+        d.style.height = `${h}px`;
+        d.innerHTML = `<span>${fmt(w)}</span>`;
+        return d;
+      };
+
+      // mirror both sides
+      vizLeftEl.prepend(createPlate());
+      vizRightEl.appendChild(createPlate());
     }
+  }
+
+  if (vizLeftEl.children.length === 0){
+    vizLeftEl.innerHTML = '<div class="muted mini">No plates</div>';
+    vizRightEl.innerHTML = '<div class="muted mini">No plates</div>';
+  }
+}
 
     function buildPlateBreakdown(weights, counts){
       // {weight: countPerSide}
@@ -779,4 +787,5 @@
   </script>
 </body>
 </html>
+
 
