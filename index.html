@@ -85,14 +85,20 @@
 
     .memeWrap{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
     .meme{
-      width:64px; height:64px; border-radius:14px; object-fit:cover;
-      border:1px solid var(--border);
-      transition: transform .18s ease, filter .18s ease;
-      cursor:pointer;
-      background:var(--chip);
-    }
-    .meme:hover{ transform: scale(1.08); filter: brightness(1.12); }
+  width:60px;
+  height:60px;
+  border-radius:14px;
+  object-fit:cover;
+  border:1px solid rgba(244,240,226,.18);
+  background:#f07820; /* gym orange */
+  transition:transform .18s ease, box-shadow .18s ease;
+  cursor:pointer;
+}
 
+.meme:hover{
+  transform:scale(1.06);
+  box-shadow:0 8px 18px rgba(0,0,0,.35);
+}
     .pill{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
       padding:10px 12px;
@@ -322,7 +328,7 @@
            target="_blank"
            rel="noopener noreferrer"
            title="Visit CrossFit Roots">
-          <img class="meme" src="iron-dave.png" alt="CrossFit Roots" onerror="this.style.display='none'">
+          <img class="meme" src="iron-dave_button_orange_128.png" alt="CrossFit Roots">
         </a>
       </div>
     </header>
@@ -950,3 +956,4 @@
   </script>
 </body>
 </html>
+
