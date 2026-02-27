@@ -948,6 +948,10 @@ button.ghost{
       playSound(CLANG_SOUND, 0.35);
       if (exact) playSound(WIN_SOUND, 0.45);
       else playSound(FAIL_SOUND, 0.45);
+      resultsCard.scrollIntoView({ 
+  behavior: 'smooth', 
+  block: 'start' 
+});
     }
 
     // -------------------------
@@ -1014,6 +1018,7 @@ button.ghost{
   </script>
 </body>
 </html>
+
 
 
 
