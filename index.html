@@ -338,7 +338,10 @@ button.ghost{
 
     /* ===== Mobile Layout Fix (Centered + Balanced) ===== */
 @media (max-width: 560px){
-
+/* Prevent iOS “focus zoom” */
+input, select, button{
+  font-size: 16px;
+}
   .viz{
     justify-content: center;
     gap: 10px;
@@ -747,7 +750,11 @@ button.ghost{
         size === 3 ? 175 :
         size === 2 ? 10  :
                     40;
-
+// Mobile: scale plates down so stacks fit better
+if (window.innerWidth <= 560){
+  const scale = 0.82;
+  return { h: Math.round(h * scale), wpx: Math.round(wpx * scale), hue };
+}
       return { h, wpx, hue };
     }
 
@@ -944,14 +951,40 @@ button.ghost{
       }
 
       // Sounds
-      playRandomClick();
-      playSound(CLANG_SOUND, 0.35);
-      if (exact) playSound(WIN_SOUND, 0.45);
-      else playSound(FAIL_SOUND, 0.45);
-      resultsCard.scrollIntoView({ 
-  behavior: 'smooth', 
-  block: 'start' 
-});
+     // Sounds
+playRandomClick();
+playSound(CLANG_SOUND, 0.35);
+if (exact) playSound(WIN_SOUND, 0.45);
+else playSound(FAIL_SOUND, 0.45);
+
+// Stop mobile zoom + scroll to results
+if (document.activeElement && typeof document.activeElement.blur === "function") {
+  document.activeElement.blur();
+}
+if (window.innerWidth < 980){
+  setTimeout(() => {
+    resultsCard.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 60);
+}
+}
+      // Stop mobile browser from staying “zoomed” on a focused input
+if (document.activeElement && typeof document.activeElement.blur === "function") {
+  document.activeElement.blur();
+}
+     // Stop mobile zoom from focused inputs
+if (document.activeElement && typeof document.activeElement.blur === "function") {
+  document.activeElement.blur();
+}
+
+// Only auto-scroll on mobile
+if (window.innerWidth < 980){
+  setTimeout(() => {
+    resultsCard.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }, 60);
+}
     }
 
     // -------------------------
@@ -1018,6 +1051,7 @@ button.ghost{
   </script>
 </body>
 </html>
+
 
 
 
